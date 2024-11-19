@@ -9,6 +9,9 @@ import github.kayquesanmartin.MedConsultAPI.service.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class PatientServiceImpl implements PatientService {
@@ -37,5 +40,14 @@ public class PatientServiceImpl implements PatientService {
                 );
 
         return PatientMapper.mapToPatientDto(patient);
+    }
+
+    @Override
+    public List<PatientDto> getAllPatients() {
+
+        List<Patient> patients = patientRepository.findAll();
+
+        return patients.stream().map(patient -> PatientMapper.mapToPatientDto(patient))
+                .collect(Collectors.toList());
     }
 }
