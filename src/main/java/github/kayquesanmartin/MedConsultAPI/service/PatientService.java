@@ -6,4 +6,6 @@ public interface PatientService {
 
     PatientDto createPatient(PatientDto patientDto);
 
+    PatientDto getPatientById(Long patientId);
+
 }

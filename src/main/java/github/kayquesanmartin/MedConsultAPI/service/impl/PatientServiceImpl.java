@@ -2,6 +2,7 @@ package github.kayquesanmartin.MedConsultAPI.service.impl;
 
 import github.kayquesanmartin.MedConsultAPI.dto.PatientDto;
 import github.kayquesanmartin.MedConsultAPI.entity.Patient;
+import github.kayquesanmartin.MedConsultAPI.exception.ResourceNotFoundException;
 import github.kayquesanmartin.MedConsultAPI.mapper.PatientMapper;
 import github.kayquesanmartin.MedConsultAPI.repository.PatientRepository;
 import github.kayquesanmartin.MedConsultAPI.service.PatientService;
@@ -25,5 +26,16 @@ public class PatientServiceImpl implements PatientService {
 
         // Convertendo a entidade salva de volta para DTO
         return PatientMapper.mapToPatientDto(savedPatient);
+    }
+
+    @Override
+    public PatientDto getPatientById(Long patientId) {
+
+        Patient patient = patientRepository.findById(patientId)
+                . orElseThrow(
+                        () -> new ResourceNotFoundException("Patient with id " + patientId + " not found")
+                );
+
+        return PatientMapper.mapToPatientDto(patient);
     }
 }
