@@ -50,4 +50,26 @@ public class PatientServiceImpl implements PatientService {
         return patients.stream().map(patient -> PatientMapper.mapToPatientDto(patient))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public PatientDto updatePatient(Long patientId, PatientDto updatedPatient) {
+
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Patient is not exists with given id: " + patientId)
+                );
+
+        patient.setCpf(updatedPatient.getCpf());
+        patient.setFirstName(updatedPatient.getFirstName());
+        patient.setLastName(updatedPatient.getLastName());
+        patient.setEmail(updatedPatient.getEmail());
+        patient.setTelephoneNumber(updatedPatient.getTelephoneNumber());
+        patient.setGender(updatedPatient.getGender());
+        patient.setBirthDate(updatedPatient.getBirthDate());
+        patient.setAddress(updatedPatient.getAddress());
+
+        Patient updatedPatientObj = patientRepository.save(patient);
+
+        return PatientMapper.mapToPatientDto(updatedPatientObj);
+    }
 }

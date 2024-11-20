@@ -47,10 +47,21 @@ public class PatientController {
     }
 
     // Build Get All Patients REST API
+    @Operation(description = "Operação para buscar todos os pacientes.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pacientes encontrados com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
     @GetMapping
     public ResponseEntity<List<PatientDto>> getAllPatients() {
         List<PatientDto> patients = patientService.getAllPatients();
 
         return ResponseEntity.ok(patients);
+    }
+
+    public ResponseEntity<PatientDto> updatePatient(@PathVariable("id") Long patientId, @RequestBody PatientDto updatePatient){
+        PatientDto patientDto = patientService.updatePatient(patientId, updatePatient);
+
+        return ResponseEntity.ok(patientDto);
     }
 }
